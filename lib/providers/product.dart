@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/env/env.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -30,7 +31,7 @@ class Product with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
     final url = Uri.parse(
-      'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId/$id.json?auth=$token',
+      '$apiKey/userFavorites/$userId/$id.json?auth=$token',
     );
     try {
       final response = await http.put(url, body: json.encode(isFavorite));

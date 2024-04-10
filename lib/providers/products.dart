@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/http_exception.dart';
 import './product.dart';
+import '../env/env.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
@@ -32,7 +33,7 @@ class Products with ChangeNotifier {
         filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
 
     var url = Uri.parse(
-      'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken&$filterString',
+      '$apiKey/products.json?auth=$authToken&$filterString',
     );
     try {
       final response = await http.get(url);
@@ -41,7 +42,7 @@ class Products with ChangeNotifier {
         return;
       }
       url = Uri.parse(
-        'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken',
+        '$apiKey/userFavorites/$userId.json?auth=$authToken',
       );
       final favoriteResponse = await http.get(url);
       final favoriteData = json.decode(favoriteResponse.body);
@@ -69,7 +70,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-      'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken',
+      '$apiKey/products.json?auth=$authToken',
     );
 
     try {
@@ -102,7 +103,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url = Uri.parse(
-        'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json?auth=$authToken',
+        '$apiKey/products/$id.json?auth=$authToken',
       );
       await http.patch(url,
           body: json.encode({
@@ -120,7 +121,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-      'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json?auth=$authToken',
+      '$apiKey/products/$id.json?auth=$authToken',
     );
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];

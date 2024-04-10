@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/env/env.dart';
 
 import './cart.dart';
 
@@ -32,7 +33,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
-      'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/orders/$userId.json?auth=$authToken',
+      '$apiKey/orders/$userId.json?auth=$authToken',
     );
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
@@ -63,7 +64,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final url = Uri.parse(
-      'https://react-tasks-app-c05c6-default-rtdb.europe-west1.firebasedatabase.app/orders/$userId.json?auth=$authToken',
+      '$apiKey/orders/$userId.json?auth=$authToken',
     );
     final timestamp = DateTime.now();
     final response = await http.post(
